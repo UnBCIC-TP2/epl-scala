@@ -5,13 +5,13 @@ import org.scalatest.Matchers
 import org.scalatest.GivenWhenThen
 import org.scalatest.BeforeAndAfter
 
+import br.unb.cic.epl._
 
 class TestLiteral extends FlatSpec with Matchers with GivenWhenThen with BeforeAndAfter {
 
   behavior of "A Literal"
 
-  var literal100: br.unb.cic.epl.Literal = _ 
-
+  var literal100: Literal = _ 
   before {
     literal100 = new Literal(100)
   }
@@ -21,12 +21,12 @@ class TestLiteral extends FlatSpec with Matchers with GivenWhenThen with BeforeA
   }
 
   it should "return Integer 1000 when we call literal1000.eval()" in {
-    val literal1000 = new Literal(1000) with LiteralEval
+    val literal1000 = new Literal(1000) with Eval.Literal
     literal1000.eval() should be (1000)
   }
 
   it should "return Integer 1 when we call Literal.heightl()" in {
-    val literal = new Literal(1000) with LiteralHeight
+    val literal = new Literal(1000) with Height.Literal
     literal.height() should be (1)
   }
 
