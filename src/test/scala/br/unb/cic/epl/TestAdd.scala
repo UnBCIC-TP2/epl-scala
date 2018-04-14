@@ -26,28 +26,4 @@ class TestAdd extends FlatSpec with Matchers with GivenWhenThen with BeforeAndAf
     val add = new Add(litX, litY) with Eval.Add
     add.eval() should be (30)
   }
-
-  it should "return Integer 2 when we call Add(Literal, Literal).height()" in {
-    val litX = new Literal(10) with Height.Literal
-    val litY = new Literal(20) with Height.Literal
-    val add = new Add(litX, litY) with Height.Add
-    add.height() should be (2)
-  }
-
-  it should "return Integer 3 when we call Add(Add(Literal, Literal), Literal).height()" in {
-    val litX  = new Literal(10) with Height.Literal
-    val litY  = new Literal(20) with Height.Literal
-    val addXY = new Add(litX, litY) with Height.Add
-    val add   = new Add(addXY, litY) with Height.Add
-    add.height() should be (3)
-  }
-
-  it should "return 3 when we call add.height() and 40 when we call add.eval(), where add is Add(Literal(10), Add(Literal(10),Literal(20)))" in {
-    val litX = new Literal(10) with Height.Literal with Eval.Literal
-    val litY = new Literal(20) with Height.Literal with Eval.Literal
-    val addXY = new Add(litX, litY) with Height.Add with Eval.Add
-    val add = new Add(litX, addXY) with Height.Add with Eval.Add
-    add.height() should be (3)
-    add.eval() should be (40)
-  }
 }
