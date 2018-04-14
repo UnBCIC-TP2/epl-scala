@@ -1,11 +1,7 @@
 package br.unb.cic.epl
 
-package object AddEval {
-  class Add(l: Eval.Expression, r: Eval.Expression) extends Add.GAdd with Eval.Expression {
-    type T = Eval.Expression
-    lhs = l
-    rhs = r
-
-    override def eval(): Int = lhs.eval() + rhs.eval()
-  }
+trait AddEval extends Add with Eval {
+	override def eval(): Int = {
+		lhs.asInstanceOf[Eval].eval() + rhs.asInstanceOf[Eval].eval()
+	}
 }

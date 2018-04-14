@@ -8,25 +8,47 @@ import org.scalatest.BeforeAndAfter
 
 class TestSub extends FlatSpec with Matchers with GivenWhenThen with BeforeAndAfter {
 
-  behavior of "An Sub expression"
+  behavior of "An Sub Expression"
 
-  var literal100: Eval.Literal = _
-  var literal200: Eval.Literal = _
+  //var literal100: br.unb.cic.epl.Literal = _ 
+  //before {
+  //  literal100 = new Literal(100)
+  //}
 
-  before {
-    literal100 = new Core.Literal(100) with Eval.Literal
-    literal200 = new Core.Literal(200) with Eval.Literal
+  it should "return String \"(10 - 20)\" call Sub(Literal(10), Literal(20)).print()" in {
+    val sub = new Sub(new Literal(10), new Literal(20))
+    sub.print() should be ("(10 - 20)")
   }
 
-  it should "return String (100 - 200) when we call Sub(Literal(100), Literal(200).print())" in {
-    val add = new SubEval.Sub(literal100, literal200)
-  
-    add.print() should be ("(100 - 200)")
+  it should "return Integer -10 when we call Sub(Literal(10), Literal(20)).eval()" in {
+    val litX = new Literal(10) with LiteralEval
+    val litY = new Literal(20) with LiteralEval
+    val sub = new Sub(litX, litY) with SubEval
+    sub.eval() should be (-10)
   }
 
-  it should "return -100 when we call call Sub(Literal(100), Literal(200)).eval()" in {
-    val add = new SubEval.Sub(literal100, literal200)
-
-    add.eval() should be (-100)
+  it should "return Integer 2 when we call Sub(Literal, Literal).height()" in {
+    val litX = new Literal(10) with LiteralHeight
+    val litY = new Literal(20) with LiteralHeight
+    val sub = new Sub(litX, litY) with SubHeight
+    sub.height() should be (2)
   }
+
+  it should "return Integer 3 when we call Sub(Sub(Literal, Literal), Literal).height()" in {
+    val litX  = new Literal(10) with LiteralHeight
+    val litY  = new Literal(20) with LiteralHeight
+    val subXY = new Sub(litX, litY) with SubHeight
+    val sub   = new Sub(subXY, litY) with SubHeight
+    sub.height() should be (3)
+  }
+
+  it should "return 3 when we call sub.height() and 20 when we call sub.eval(), where sub is Sub(Literal(10), Sub(Literal(10),Literal(20)))" in {
+    val litX = new Literal(10) with LiteralHeight with LiteralEval
+    val litY = new Literal(20) with LiteralHeight with LiteralEval
+    val subXY = new Sub(litX, litY) with SubHeight with SubEval
+    val sub = new Sub(litX, subXY) with SubHeight with SubEval
+    sub.height() should be (3)
+    sub.eval() should be (20)
+  }
+
 }

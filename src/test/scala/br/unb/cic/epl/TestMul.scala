@@ -8,25 +8,46 @@ import org.scalatest.BeforeAndAfter
 
 class TestMul extends FlatSpec with Matchers with GivenWhenThen with BeforeAndAfter {
 
-  behavior of "An Mul expression"
+  behavior of "An Mul Expression"
 
-  var literal100: Eval.Literal = _
-  var literal200: Eval.Literal = _
+  //var literal100: br.unb.cic.epl.Literal = _ 
+  //before {
+  //  literal100 = new Literal(100)
+  //}
 
-  before {
-    literal100 = new Core.Literal(100) with Eval.Literal
-    literal200 = new Core.Literal(200) with Eval.Literal
+  it should "return String \"(10 * 20)\" call Mul(Literal(10), Literal(20)).print()" in {
+    val mul = new Mul(new Literal(10), new Literal(20))
+    mul.print() should be ("(10 * 20)")
   }
 
-  it should "return String (100 * 200) when we call Mul(Literal(100), Literal(200).print())" in {
-    val add = new MulEval.Mul(literal100, literal200)
-  
-    add.print() should be ("(100 * 200)")
+  it should "return Integer 200 when we call Mul(Literal(10), Literal(20)).eval()" in {
+    val litX = new Literal(10) with LiteralEval
+    val litY = new Literal(20) with LiteralEval
+    val mul = new Mul(litX, litY) with MulEval
+    mul.eval() should be (200)
   }
 
-  it should "return 20000 when we call call Mul(Literal(100), Literal(200)).eval()" in {
-    val add = new MulEval.Mul(literal100, literal200)
+  it should "return Integer 2 when we call Mul(Literal, Literal).height()" in {
+    val litX = new Literal(10) with LiteralHeight
+    val litY = new Literal(20) with LiteralHeight
+    val mul = new Mul(litX, litY) with MulHeight
+    mul.height() should be (2)
+  }
 
-    add.eval() should be (20000)
+  it should "return Integer 3 when we call Mul(Mul(Literal, Literal), Literal).height()" in {
+    val litX  = new Literal(10) with LiteralHeight
+    val litY  = new Literal(20) with LiteralHeight
+    val mulXY = new Mul(litX, litY) with MulHeight
+    val mul   = new Mul(mulXY, litY) with MulHeight
+    mul.height() should be (3)
+  }
+
+  it should "return 3 when we call mul.height() and 2000 when we call mul.eval(), where mul is Mul(Literal(10), Mul(Literal(10),Literal(20)))" in {
+    val litX = new Literal(10) with LiteralHeight with LiteralEval
+    val litY = new Literal(20) with LiteralHeight with LiteralEval
+    val mulXY = new Mul(litX, litY) with MulHeight with MulEval
+    val mul = new Mul(litX, mulXY) with MulHeight with MulEval
+    mul.height() should be (3)
+    mul.eval() should be (2000)
   }
 }
