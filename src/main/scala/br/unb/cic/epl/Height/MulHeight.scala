@@ -1,6 +1,6 @@
-package br.unb.cic.epl
+package br.unb.cic.epl.Height
 
-trait SubHeight extends Sub with Height {
+trait Mul extends br.unb.cic.epl.Mul with Height {
 	override def height(): Int = {
 		val hl = 1 + lhs.asInstanceOf[Height].height()
 		val hr = 1 + rhs.asInstanceOf[Height].height()
