@@ -5,28 +5,25 @@ import org.scalatest.Matchers
 import org.scalatest.GivenWhenThen
 import org.scalatest.BeforeAndAfter
 
-
+import br.unb.cic.epl._
 class TestAdd extends FlatSpec with Matchers with GivenWhenThen with BeforeAndAfter {
 
-  behavior of "An Add expression"
+  behavior of "An Add Expression"
 
-  var literal100: Eval.Literal = _
-  var literal200: Eval.Literal = _
+  //var literal100: br.unb.cic.epl.Literal = _ 
+  //before {
+  //  literal100 = new Literal(100)
+  //}
 
-  before {
-    literal100 = new Core.Literal(100) with Eval.Literal
-    literal200 = new Core.Literal(200) with Eval.Literal
+  it should "return String \"(10 + 20)\" call Add(Literal(10), Literal(20)).print()" in {
+    val add = new Add(new Literal(10), new Literal(20))
+    add.print() should be ("(10 + 20)")
   }
 
-  it should "return String (100 + 200) when we call Add(Literal(100), Literal(200).print())" in {
-    val add = new AddEval.Add(literal100, literal200)
-  
-    add.print() should be ("(100 + 200)")
-  }
-
-  it should "return 300 when we call call Add(Literal(100), Literal(200)).eval()" in {
-    val add = new AddEval.Add(literal100, literal200)
-
-    add.eval() should be (300)
+  it should "return Integer 30 when we call Add(Literal(10), Literal(20)).eval()" in {
+    val litX = new Literal(10) with Eval.Literal
+    val litY = new Literal(20) with Eval.Literal
+    val add = new Add(litX, litY) with Eval.Add
+    add.eval() should be (30)
   }
 }
